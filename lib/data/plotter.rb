@@ -1,6 +1,7 @@
 require 'rubyvis'
 
 module ML
+  # Plotting the data to svg
   class Plotter
     # Initializer of plotter
     #
@@ -13,53 +14,64 @@ module ML
       @y_range = y_range
       @x_size = x_size
       @y_size = y_size
+
+      @x = pv.Scale.linear(0, @x_range).range(0, @x_size)
+      @y = pv.Scale.linear(0, @y_range).range(0, @y_size)
+
+      @vis = pv.Panel.new.width(@x_size).height(@y_size)
+               .bottom(20).left(20).right(10).top(5)
+      
+      @vis.add(pv.Rule).data(@y.ticks()).bottom(@y)
+          .stroke_style(lambda {|d| d!=0 ? "#eee" : "#000"})
+          .anchor("left").add(pv.Label)
+          .visible(lambda {|d| d > 0 and d < x_range})
+          .text(@y.tick_format)
+ 
+      @vis.add(pv.Rule).data(@x.ticks()).left(@x)
+          .stroke_style(lambda {|d| d!=0 ? "#eee" : "#000"})
+          .anchor("bottom").add(pv.Label)
+          .visible(lambda {|d| d > 0 and d < y_range})
+          .text(@x.tick_format)
+
+      yield(self) if block_given?
     end
 
-    # Plotting 2D data as well as line
+    # Plotting points with shape and color
     #
     # @param [Array] points to plot
-    # @param [Array] line coeffecient
-    # @returning [String] svg graph
-    def plot points, line = nil
-      x = pv.Scale.linear(0, @x_range).range(0, @x_size)
-      y = pv.Scale.linear(0, @y_range).range(0, @y_size)
+    # @param [String] shape of the points
+    # @param [String] color of the points
+    def dot points, shape = "circle", color = "#000"
+      # FIXME: dirty hack for instance_exec
+      x = @x
+      y = @y
 
-      vis = pv.Panel.new.width(@x_size).height(@y_size)
-              .bottom(20).left(20).right(10).top(5)
-      
-      vis.add(pv.Rule).data(y.ticks()).bottom(y)
-         .stroke_style(lambda {|d| d!=0 ? "#eee" : "#000"})
-         .anchor("left").add(pv.Label)
-         .visible(lambda {|d|  d > 0 and d < 100})
-         .text(y.tick_format)
- 
-      vis.add(pv.Rule).data(x.ticks()).left(x)
-         .stroke_style(lambda {|d| d!=0 ? "#eee" : "#000"})
-         .anchor("bottom").add(pv.Label)
-         .visible(lambda {|d|  d > 0 and d < 100})
-         .text(x.tick_format)
+      @vis.add(pv.Dot).data(points)         
+          .left(lambda {|d| x.scale(d[0])})
+          .bottom(lambda {|d| y.scale(d[1])})
+          .shape(shape)
+          .stroke_style(color)
+    end
 
-      vis.add(pv.Panel)
+    # Plotting line with color
+    #
+    # @param [Array] 2 points which represents line
+    def line points, color = "#000"
+      x = @x
+      y = @y
 
-      vis.add(pv.Dot).data(points[0])         
-         .left(lambda {|d| x.scale(d[0])})
-         .bottom(lambda {|d| y.scale(d[1])})
-         .shape("cross")
-         .stroke_style("#000")
-      vis.add(pv.Dot).data(points[1])
-         .left(lambda {|d| x.scale(d[0])})
-         .bottom(lambda {|d| y.scale(d[1])})
-         .shape("circle")
-         .stroke_style("#000")
-      
-      if line
-        vis.add(pv.Line).data(line)
-           .left(lambda {|d| x.scale(d[0])})
-           .bottom(lambda {|d| y.scale(d[1])})
-      end
+      @vis.add(pv.Line).data(points)
+          .left(lambda {|d| x.scale(d[0])})
+          .bottom(lambda {|d| y.scale(d[1])})
+          .stroke_style(color)
+    end
 
-      vis.render
-      vis.to_svg
+    # Convert to svg
+    #
+    # @return [String] svg plot
+    def to_svg
+      @vis.render
+      @vis.to_svg
     end
   end
 end

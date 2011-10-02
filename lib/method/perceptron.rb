@@ -16,6 +16,7 @@ module ML
     # @param [Hash] supervised input data (mapping from array to integer)
     # @return [PerceptronLearner] self object 
     def train! data
+      @update = 0
       while true
         misclassified = false
 
@@ -26,6 +27,7 @@ module ML
             misclassified = true
 
             @w = @w + result * aug_data
+            @update += 1
             break
           end
         end
@@ -34,8 +36,18 @@ module ML
       end
     end
 
+    # The final coefficient of the line
+    #
+    # @return [line] [a,b,c] for ax+by+c=0
     def line
       @w.column(0).to_a
+    end
+
+    # The number for updates
+    #
+    # @return [Integer] update count
+    def update_count
+      @update
     end
 
   private
