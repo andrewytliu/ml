@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'ml'
+
+puts "generating points"
+line = [-1.0, 2.0, 0.0]
+
+dim = 10
+generator = ML::Generator.new(dim)
+hyperplane = ML::Generator.generate_vector(dim)
+data = generator.points(1000, hyperplane)
+
+puts "training line"
+supervised = {}
+data[0].each { |e| supervised[e] = 1 }
+data[1].each { |e| supervised[e] = -1 }
+learner = ML::PerceptronLearner.new(dim)
+learner.train! supervised
+puts "training done"
+
+puts "count: #{learner.update_count}"
