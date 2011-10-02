@@ -40,8 +40,6 @@ module ML
 
   private
     def classify data
-      p @w
-      p data
       (@w.transpose * data)[0,0] <=> 0
     end
   end
