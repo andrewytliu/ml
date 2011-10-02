@@ -5,3 +5,4 @@ gem 'yard'
 
 # for plotting svg
 gem 'rubyvis'
+gem 'nokogiri'
