@@ -8,7 +8,7 @@ module ML
     # @param [Integer] the number of dimension
     def initialize dim
       @dim = dim
-      @w = Matrix[Array.new(dim, 0)]
+      @w = Matrix.column_vector(Array.new(dim + 1, 0))
     end
 
     # Train with supervised data
@@ -20,7 +20,7 @@ module ML
         misclassified = false
 
         for dat, result in data
-          aug_data = Matrix[[1] + dat]
+          aug_data = Matrix.column_vector(dat)
 
           if classify(aug_data) != result
             misclassified = true
@@ -34,13 +34,15 @@ module ML
       end
     end
 
+    def line
+      @w.column(0).to_a
+    end
+
   private
     def classify data
-      if @w.transpose * data > 0
-        1
-      else
-        -1
-      end
+      p @w
+      p data
+      (@w.transpose * data)[0,0] <=> 0
     end
   end
 end
