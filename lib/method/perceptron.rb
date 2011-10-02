@@ -50,6 +50,14 @@ module ML
       @update
     end
 
+    # Predict certain data
+    #
+    # @param [Array] data in question
+    # @param [Integer] prediction
+    def predict data
+      classify Matrix.column_vector(data + [1.0])  
+    end
+
   private
     def classify data
       (@w.transpose * data)[0,0] <=> 0
