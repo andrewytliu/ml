@@ -4,11 +4,12 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'ml'
 
 puts "generating points"
-line = [-1.0, 2.0, 0.0]
-
+# line = [-1.0, 2.0, 0.0]
+100.times do
 dim = 10
 generator = ML::Generator.new(dim)
 hyperplane = ML::Generator.generate_vector(dim)
+hyperplane[-1] = rand - 0.5
 data = generator.points(1000, hyperplane)
 
 puts "training line"
@@ -17,6 +18,7 @@ data[0].each { |e| supervised[e] = 1 }
 data[1].each { |e| supervised[e] = -1 }
 learner = ML::PerceptronLearner.new(dim)
 learner.train! supervised
-puts "training done"
+# puts "training done"
 
-puts "count: #{learner.update_count}"
+puts "#{learner.update_count}"
+end

@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'ml'
+
+puts "parsing data"
+supervised = ML::Parser.new.parse_supervised(ARGV[0])
+
+puts "training line"
+learner = ML::PerceptronLearner.new(supervised.first.first.size - 1)
+learner.train! supervised
+puts "training done"
+puts "line: #{learner.line}"
+
+puts "testing data"
+tests = ML::Parser.new.parse_unsupervised(ARGV[1])
+
+File.open(ARGV[2], "w") do |f|
+  tests.each do |test|
+    f.puts learner.predict(test)
+  end
+end
