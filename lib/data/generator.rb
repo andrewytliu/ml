@@ -66,7 +66,7 @@ module ML
     # @param [Integer] the number of points of each set
     # @param [Array] array of the size of dimension to specify the hyper plane
     # @return [Array] two sets of points
-    def points_2d points, coef
+    def points points, coef
       result = []
       # for each group
       [1, -1].each do |grp|
@@ -74,7 +74,7 @@ module ML
 
         points.times do
           while true
-            point = generate_vector
+            point = Generator.generate_vector(@dim)
             prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
             if (prod[0,0] <=> 0) == grp
               result[-1] << point
@@ -86,10 +86,13 @@ module ML
       result
     end
 
-    def generate_vector
-      result = []
-      @dim.times { result << rand }
-      result
+    # Generating a random vector
+    #
+    # @param [Integer] the dimension of the vector
+    # @return [Array] random vector
+    def self.generate_vector dim
+      result = Array.new(dim) { rand - 0.5 } 
+      result << 1.0
     end
   end
 end
