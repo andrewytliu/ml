@@ -77,7 +77,6 @@ module ML
             point = Generator.generate_vector(@dim)
             prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
             if (prod[0,0] <=> 0) == grp
-              puts "#{grp}: #{result[-1].size}"
               result[-1] << point
               break
             end
