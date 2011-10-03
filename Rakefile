@@ -42,5 +42,5 @@ end
 
 task :default => :spec
 
-require 'yard'
-YARD::Rake::YardocTask.new
+#require 'yard'
+#YARD::Rake::YardocTask.new
