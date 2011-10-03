@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "lib/data/plotter.rb",
     "lib/method/perceptron.rb",
     "lib/ml.rb",
+    "ml.gemspec",
     "spec/learning_spec.rb",
     "spec/spec_helper.rb"
   ]
