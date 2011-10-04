@@ -75,7 +75,7 @@ module ML
 
           points.times do
             while true
-              point = Generator.generate_vector(@dim)
+              point = Generator.generate_vector(@dim, 100)
               prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
               if (prod[0,0] <=> 0) == grp
                 result[-1] << point
@@ -90,9 +90,10 @@ module ML
       # Generating a random vector
       #
       # @param [Integer] dim the dimension of the vector
+      # @param [Integer] scale the scale of each component
       # @return [Array] random vector
-      def self.generate_vector dim
-        result = Array.new(dim) { rand - 0.5 } 
+      def self.generate_vector dim, scale = 1
+        result = Array.new(dim) { (rand - 0.5) * scale } 
         result << 1.0
       end
     end
