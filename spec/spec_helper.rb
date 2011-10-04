@@ -11,6 +11,6 @@ require 'bacon'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'learning'
+require 'ml'
 
 Bacon.summary_on_exit
