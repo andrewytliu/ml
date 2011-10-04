@@ -7,7 +7,15 @@ require 'data/parser'
 
 require 'method/perceptron'
 
+# Top namespace for machine learning algorithms
 module ML
+  # Data processing module
+  module Data
+  end
+
+  # Learning algorithms
+  module Learner
+  end
 end
 
 MachingLearning = ML
