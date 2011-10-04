@@ -26,19 +26,17 @@ module ML
       #
       # @param [Integer] points the number of points of each set
       # @param [Array] coef [a,b,c] for ax+by+c=0
-      # @return [Array] two sets of points
+      # @return [Hash] key: points, value: supervised value
       def points_2d points, coef = [-1.0, 1.0, 0.0]
-        result = []
+        result = {}
         # for each group
         [1, -1].each do |grp|
-          result << []
-
           points.times do
             while true
               point = generate_point
               prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
               if (prod[0,0] <=> 0) == grp
-                result[-1] << point
+                result[point] = grp
                 break
               end
             end
@@ -66,19 +64,17 @@ module ML
       #
       # @param [Integer] points the number of points of each set
       # @param [Array] coef array of the size of dimension to specify the hyper plane
-      # @return [Array] two sets of points
+      # @return [Hash] key: points, value: supervised value
       def points points, coef
-        result = []
+        result = {}
         # for each group
         [1, -1].each do |grp|
-          result << []
-
           points.times do
             while true
               point = Generator.generate_vector(@dim, 100)
               prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
               if (prod[0,0] <=> 0) == grp
-                result[-1] << point
+                result[point] = grp
                 break
               end
             end
