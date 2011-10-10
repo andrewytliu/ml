@@ -6,6 +6,7 @@ require 'data/generator'
 require 'data/parser'
 
 require 'method/perceptron'
+require 'method/adaptive_perceptron'
 
 # Top namespace for machine learning algorithms
 module ML

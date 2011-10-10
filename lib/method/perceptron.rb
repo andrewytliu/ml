@@ -23,10 +23,10 @@ module ML
           for dat, result in data
             aug_data = Matrix.column_vector(dat)
 
-            if classify(aug_data) != result
+            if wrongly_classify aug_data, result
               misclassified = true
 
-              @w = @w + result * aug_data
+              update_vector result, aug_data
               @update += 1
               break
             end
@@ -55,12 +55,20 @@ module ML
       # @param [Array] data data in question
       # @return [Integer] prediction
       def predict data
-        classify Matrix.column_vector(data + [1.0])  
+        classify(Matrix.column_vector(data + [1.0])) <=> 0
       end
 
-    private
+    protected
       def classify data
-        (@w.transpose * data)[0,0] <=> 0
+        (@w.transpose * data)[0,0]
+      end
+
+      def wrongly_classify data, y
+        classify(data) * y <= 0
+      end
+
+      def update_vector y, x
+        @w = @w + y * x
       end
     end
   end
