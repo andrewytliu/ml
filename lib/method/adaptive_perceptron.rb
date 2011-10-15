@@ -14,11 +14,11 @@ module ML
       end
 
     protected
-      def wrongly_classify data, y
-        classify(data) * y <= 1
+      def wrongly_classify x, y
+        classify(x) * y <= 1
       end
 
-      def update_vector y, x
+      def update_vector x, y
         @w = @w + @eta * (y - classify(x))* x
       end
     end

@@ -17,19 +17,23 @@ module ML
       # @param [Hash] data supervised input data (mapping from array to integer)
       # @param [Numeric] threshold the upper bound of the traning iteration
       def train! data, thres = 1.0/0
+        pool = data.to_a
         @update = 0
         @threshold = thres
+
         while true
           break if @update >= @threshold
           misclassified = false
+          order = (1...(pool.size)).to_a.shuffle
 
-          for dat, result in data
+          for i in order
+            dat, result = pool[i]
             aug_data = Matrix.column_vector(dat)
 
             if wrongly_classify aug_data, result
               misclassified = true
 
-              update_vector result, aug_data
+              update_vector aug_data, result
               @update += 1
               break
             end
@@ -66,11 +70,11 @@ module ML
         (@w.transpose * data)[0,0]
       end
 
-      def wrongly_classify data, y
-        classify(data) * y <= 0
+      def wrongly_classify x, y
+        classify(x) * y <= 0
       end
 
-      def update_vector y, x
+      def update_vector x, y
         @w = @w + y * x
       end
     end
