@@ -7,7 +7,7 @@ module ML
       # Initialize a perceptron learner
       #
       # @param [Integer] dim the number of dimension
-      def initialize dim
+      def initialize dim, thres = 1.0/0
         @dim = dim
         @w = Matrix.column_vector(Array.new(dim + 1, 0))
       end
@@ -15,9 +15,12 @@ module ML
       # Train with supervised data
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
-      def train! data
+      # @param [Numeric] threshold the upper bound of the traning iteration
+      def train! data, thres = 1.0/0
         @update = 0
+        @threshold = thres
         while true
+          break if @update >= @threshold
           misclassified = false
 
           for dat, result in data
