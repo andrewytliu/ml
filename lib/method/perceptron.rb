@@ -10,6 +10,7 @@ module ML
       def initialize dim, thres = 1.0/0
         @dim = dim
         @w = Matrix.column_vector(Array.new(dim + 1, 0))
+        @error = 0
       end
 
       # Train with supervised data
@@ -41,6 +42,21 @@ module ML
 
           break unless misclassified
         end
+
+        # check out errors
+        if @update >= @threshold
+          for dat, result in pool
+            classified_result = (classify(Matrix.column_vector(dat)) <=> 0)
+            @error += 1 unless result == classified_result
+          end
+        end
+      end
+
+      # The number of errors when the training process is stopped by threshold
+      #
+      # @return [Integer] error error numbers
+      def error
+        @error
       end
 
       # The final coefficient of the line
