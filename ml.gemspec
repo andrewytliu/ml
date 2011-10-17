@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ml"
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Liu"]
-  s.date = "2011-10-04"
+  s.date = "2011-10-17"
   s.description = "Machine learning library in Ruby"
   s.email = "andrewliu33@gmail.com"
   s.extra_rdoc_files = [
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "lib/data/generator.rb",
     "lib/data/parser.rb",
     "lib/data/plotter.rb",
+    "lib/method/adaptive_perceptron.rb",
     "lib/method/perceptron.rb",
     "lib/ml.rb",
     "ml.gemspec",
