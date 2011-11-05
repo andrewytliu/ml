@@ -7,7 +7,7 @@ module ML
       # Initialize a perceptron learner
       #
       # @param [Integer] dim the number of dimension
-      def initialize dim, thres = 1.0/0
+      def initialize dim
         @dim = dim
         @w = Matrix.column_vector(Array.new(dim + 1, 0))
       end
@@ -16,11 +16,10 @@ module ML
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
       # @param [Numeric] threshold the upper bound of the traning iteration
-      # @return [Array] error_and_update [error, update] error in traning and update numbers used
+      # @return [Hash] {error, update_count} error in traning and update numbers used
       def train! data, threshold = 1.0/0
         pool = data.to_a
         update = 0
-        error = 0
 
         while true
           break if update >= threshold
@@ -44,14 +43,13 @@ module ML
         end
 
         # check out errors
-        if update >= threshold
-          for dat, result in pool
-            classified_result = (classify(Matrix.column_vector(dat)) <=> 0)
-            error += 1 unless result == classified_result
-          end
-        end
+        error = if update >= threshold
+                  classify_error pool
+                else
+                  0
+                end
 
-        [error, update]
+        {:error => error, :update_count => update}
       end
 
       # The final coefficient of the line
@@ -80,6 +78,17 @@ module ML
 
       def update_vector x, y
         @w = @w + y * x
+      end
+
+      def classify_error supervised_data
+        error = 0
+
+        for data, result in supervised_data
+          classified_result = (classify(Matrix.column_vector(data)) <=> 0)
+          error += 1 unless result == classified_result
+        end
+
+        error
       end
     end
   end
