@@ -8,7 +8,9 @@ describe "Learner" do
       generator = ML::Data::Generator2D.new
       data = generator.points_2d(10)
 
-      error, update_count = learner.train! data
+      response = learner.train! data
+      error = response[:error]
+      update_count = response[:update_count]
 
       line = learner.line
       line.should.kind_of?(Array).should == true
@@ -23,7 +25,9 @@ describe "Learner" do
       generator = ML::Data::Generator.new(4)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
-      error, update_count = learner.train! data
+      response = learner.train! data
+      error = response[:error]
+      update_count = response[:update_count]
 
       line = learner.line
       line.should.kind_of?(Array).should == true
@@ -40,7 +44,9 @@ describe "Learner" do
       generator = ML::Data::Generator.new(4)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
-      error, update_count = learner.train! data, 1000
+      response = learner.train! data, 1000
+      error = response[:error]
+      update_count = response[:update_count]
 
       line = learner.line
       line.should.kind_of?(Array).should == true
@@ -48,6 +54,21 @@ describe "Learner" do
 
       update_count.should > 0
       update_count.should < 1000
+    end
+  end
+
+  describe "Pocket Learner" do
+    it "should run pocket perceptron learning in hyperspace" do
+      learner = ML::Learner::PocketLearner.new(4)
+
+      generator = ML::Data::Generator.new(4)
+      data = generator.points(10, ML::Data::Generator.generate_vector(4))
+
+      learner.train! data, 1000
+
+      line = learner.line
+      line.should.kind_of?(Array).should == true
+      line.size.should == 5
     end
   end
 end

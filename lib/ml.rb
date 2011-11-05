@@ -7,6 +7,8 @@ require 'data/parser'
 
 require 'method/perceptron'
 require 'method/adaptive_perceptron'
+require 'method/pocket'
+require 'method/decision_stump'
 
 # Top namespace for machine learning algorithms
 module ML
@@ -19,4 +21,4 @@ module ML
   end
 end
 
-MachingLearning = ML
+MachineLearning = ML
