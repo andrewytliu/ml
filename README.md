@@ -5,6 +5,9 @@ Machine learning library for ruby
 # Algorithm Implemented
 
 * Perceptron Learning Algorithm
+* Adaptive Perceptron (Adaline) Learning Algorithm
+* Pocket Learning Algorithm
+* Decision Stump Learning Algorithm
 
 # Tools
 
