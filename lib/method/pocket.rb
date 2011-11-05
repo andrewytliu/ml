@@ -8,10 +8,17 @@ module ML
       # @param [Integer] iteration the number of the iterations
       def train! data, iteration
         pool = data.to_a
-        best_error = classify_error pool
+        best_error, pocket = 1.0/0, nil
 
         iteration.times do
+          # update pocket
+          error = classify_error pool
+          if error < best_error
+            error = best_error
+            pocket = @w.dup
+          end
           break if best_error == 0
+
           # the random order
           order = (1...(pool.size)).to_a.shuffle
 

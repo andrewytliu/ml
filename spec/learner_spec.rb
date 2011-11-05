@@ -71,4 +71,17 @@ describe "Learner" do
       line.size.should == 5
     end
   end
+
+  describe "Decision Stump Learner" do
+    it "should run decision stump learning in hyperspace" do
+      learner = ML::Learner::DecisionStumpLearner.new(4)
+
+      generator = ML::Data::Generator.new(4)
+      data = generator.points(10, ML::Data::Generator.generate_vector(4))
+
+      learner.train! data
+      vector = learner.error_vector
+      vector.size.should == 4
+    end
+  end
 end
