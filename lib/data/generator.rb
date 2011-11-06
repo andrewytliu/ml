@@ -17,9 +17,11 @@ module ML
       #
       # @param [Integer] x_range x range
       # @param [Integer] y_range y range
-      def initialize x_range = 100, y_range = 100
+      # @param [Numeric] noise the percentage of noise
+      def initialize x_range = 100, y_range = 100, noise = 0
         @x_range = x_range
         @y_range = y_range
+        @noise = noise
       end
 
       # Generate two groups of points on 2d plain
@@ -42,6 +44,15 @@ module ML
             end
           end
         end
+
+        if @noise > 0
+          flipping = (points * @noise).to_i
+          order = (1...points).to_a.shuffle
+          for i in 0...flipping
+            points[points.keys[order[i]]] *= -1
+          end
+        end
+
         result
       end
 
@@ -56,8 +67,10 @@ module ML
       # Initial generator
       #
       # @param [Integer] dim dimension
-      def initialize dim
+      # @param [Numeric] noise the percentage of noise
+      def initialize dim, noise = 0
         @dim = dim
+        @noise = noise
       end
 
       # Generate two groups of points
@@ -80,6 +93,15 @@ module ML
             end
           end
         end
+
+        if @noise > 0
+          flipping = (points * @noise).to_i
+          order = (1...points).to_a.shuffle
+          for i in 0...flipping
+            points[points.keys[order[i]]] *= -1
+          end
+        end
+
         result
       end
 
