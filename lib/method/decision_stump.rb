@@ -16,15 +16,13 @@ module ML
       # @param [Hash] data supervised input data (mapping from array to integer)
       # @return [Hash] {error} error of the training data
       def train! data
-        min_error, best_hypo = 1.0/0, nil
-
         for i in 0...@dim
           hypo, error = search data, i
           update_hypo hypo, error
           @error_vector[i] = error
         end
 
-        {:error => min_error}
+        {:error => @min_error}
       end
 
       # Predict certain data
@@ -42,11 +40,17 @@ module ML
         @error_vector
       end
 
-    private
-      # hypothesis vector
+      # Get the hypothesis vector
+      #
+      # Format of hypothesis vector
       # h_{s,i,t}(x) = s sign((x)_i - t)
-      # [s, i, t]
+      # 
+      # @return [Array] [s, i, t] vector
+      def hypothesis
+        @best_hypo
+      end
 
+    private
       def classify data, hypo
         val = data[hypo[1]] - hypo[2]
         sign = (val > 0) ? 1 : -1
@@ -54,9 +58,9 @@ module ML
       end
 
       def update_hypo hypo, error
-        if @min_error > error
+        if error < @min_error
           @best_hypo = hypo
-          error = @min_error
+          @min_error = error
         end
       end
 

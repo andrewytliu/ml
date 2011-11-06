@@ -37,8 +37,8 @@ module ML
         end
 
         if @noise > 0
-          flipping = (points * @noise).to_i
-          order = (1...points).to_a.shuffle
+          flipping = (points * @noise * 2).to_i
+          order = (0...(points * 2)).to_a.shuffle
           for i in 0...flipping
             result[result.keys[order[i]]] *= -1
           end
