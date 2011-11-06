@@ -41,7 +41,7 @@ describe "Learner" do
     it "should run adaptive perceptron learning in hyperspace" do
       learner = ML::Learner::AdaptivePerceptronLearner.new(4, 0.1)
 
-      generator = ML::Data::Generator.new(4)
+      generator = ML::Data::Generator.new(4, 100)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
       response = learner.train! data, 1000
@@ -74,7 +74,7 @@ describe "Learner" do
     it "should run pocket perceptron learning in noisy data" do
       learner = ML::Learner::PocketLearner.new(4)
 
-      generator = ML::Data::Generator.new(4, 0.1)
+      generator = ML::Data::Generator.new(4, 1, 0.1)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
       learner.train! data, 1000
@@ -100,7 +100,7 @@ describe "Learner" do
     it "should run decision stump learning in noisy data" do
       learner = ML::Learner::DecisionStumpLearner.new(4)
 
-      generator = ML::Data::Generator.new(4, 0.1)
+      generator = ML::Data::Generator.new(4, 1, 0.1)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
       learner.train! data
