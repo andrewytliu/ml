@@ -24,7 +24,7 @@ module ML
         while true
           break if update >= threshold
           misclassified = false
-          order = (1...(pool.size)).to_a.shuffle
+          order = (0...(pool.size)).to_a.shuffle
 
           for i in order
             dat, result = pool[i]
