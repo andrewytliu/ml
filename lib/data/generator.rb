@@ -98,7 +98,7 @@ module ML
           flipping = (points * @noise).to_i
           order = (1...points).to_a.shuffle
           for i in 0...flipping
-            points[points.keys[order[i]]] *= -1
+            result[result.keys[order[i]]] *= -1
           end
         end
 

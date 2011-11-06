@@ -14,6 +14,7 @@ module ML
       # Train with a supervised data
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
+      # @return [Hash] {error} error of the training data
       def train! data
         min_error, best_hypo = 1.0/0, nil
 
@@ -22,6 +23,8 @@ module ML
           update_hypo hypo, error
           @error_vector[i] = error
         end
+
+        {:error => min_error}
       end
 
       # Predict certain data
