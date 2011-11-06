@@ -30,17 +30,10 @@ module ML
               prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
               if (prod[0,0] <=> 0) == grp
                 result[point] = grp
+                result[point] *= -1 if rand < @noise
                 break
               end
             end
-          end
-        end
-
-        if @noise > 0
-          flipping = (points * @noise * 2).to_i
-          order = (0...(points * 2)).to_a.shuffle
-          for i in 0...flipping
-            result[result.keys[order[i]]] *= -1
           end
         end
 
