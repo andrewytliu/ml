@@ -83,7 +83,7 @@ module ML
         end
 
         thres = if index == pool.size - 1
-                  pool[-1][0][dim] + 1
+                  pool[-1][0][dim] + 0.01
                 else
                   (pool[index][0][dim] + pool[index+1][0][dim]) / 2.0
                 end
