@@ -9,16 +9,21 @@ module ML
       # @param [Integer] dim dimension
       # @param [Numeric] scale the magnitude of the vector
       # @param [Numeric] noise the percentage of noise
-      def initialize dim, scale = 1, noise = 0
+      # @param [Symbol] model the noise model, #:random# for flipping 
+      #   all the element in a probability, while #:flip# only flips a
+      #   portion of elements randomly
+      def initialize dim, scale = 1, noise = 0, model = :random
         @dim = dim
         @scale = scale
         @noise = noise
+        @model = model
       end
 
       # Generate two groups of points
       #
       # @param [Integer] points the number of points of each set
-      # @param [Array] coef array of the size of dimension to specify the hyper plane
+      # @param [Array] coef array of the size of dimension to specify the
+      #   hyper plane
       # @return [Hash] key: points, value: supervised value
       def points points, coef
         result = {}
@@ -30,10 +35,18 @@ module ML
               prod = Matrix.column_vector(point).transpose * Matrix.column_vector(coef)
               if (prod[0,0] <=> 0) == grp
                 result[point] = grp
-                result[point] *= -1 if rand < @noise
+                result[point] *= -1 if @model == :random and rand < @noise
                 break
               end
             end
+          end
+        end
+
+        if @model == :flip and @noise > 0
+          flipping = (points * @noise * 2).to_i
+          order = (0...(points * 2)).to_a.shuffle
+          for i in 0...flipping
+            result[result.keys[order[i]]] *= -1
           end
         end
 
