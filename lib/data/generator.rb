@@ -9,8 +9,8 @@ module ML
       # @param [Integer] dim dimension
       # @param [Numeric] scale the magnitude of the vector
       # @param [Numeric] noise the percentage of noise
-      # @param [Symbol] model the noise model, #:random# for flipping 
-      #   all the element in a probability, while #:flip# only flips a
+      # @param [Symbol] model the noise model, :random for flipping 
+      #   all the element in a probability, while :flip only flips a
       #   portion of elements randomly
       def initialize dim, scale = 1, noise = 0, model = :random
         @dim = dim
@@ -85,10 +85,14 @@ module ML
       # @param [Integer] x_range x range
       # @param [Integer] y_range y range
       # @param [Numeric] noise the percentage of noise
-      def initialize x_range = 100, y_range = 100, noise = 0
+      # @param [Symbol] model the noise model, :random for flipping 
+      #   all the element in a probability, while :flip only flips a
+      #   portion of elements randomly
+      def initialize x_range = 100, y_range = 100, noise = 0, model = :random
         @x_range = x_range
         @y_range = y_range
         @noise = noise
+        @model = model
       end
 
       # Generate two groups of points on 2d plain

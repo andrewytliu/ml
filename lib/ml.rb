@@ -9,6 +9,8 @@ require 'method/perceptron'
 require 'method/adaptive_perceptron'
 require 'method/pocket'
 require 'method/decision_stump'
+require 'method/linear_regression'
+require 'method/logistic_regression'
 
 # Top namespace for machine learning algorithms
 module ML
