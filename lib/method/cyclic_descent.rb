@@ -7,9 +7,10 @@ module ML
       # Initialize a learner
       #
       # @param [Integer] dim dimension
-      def initialize dim
+      def initialize dim, model = :basis
         @dim = dim
         @w = Matrix.column_vector(Array.new(dim + 1, 0))
+        @model = model
       end
 
       # Train with a supervised data
@@ -69,7 +70,11 @@ module ML
 
       def calc_v iteration
         v = Array.new(@dim + 1, 0)
-        v[iteration % @dim] = 1
+        if @model == :basis
+          v[iteration % @dim] = 1
+        else
+          v[iteration % @dim] = Util.normal_distribution 0,1
+        end
         Matrix.column_vector(v)
       end
 
