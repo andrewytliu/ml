@@ -82,6 +82,7 @@ module ML
           end
         end
 
+        pcount, ncount = 0, 0
         pool.reverse.each_with_index do |dat, i|
           if dat[1] == 1
             pcount += 1
@@ -91,7 +92,7 @@ module ML
 
           if (ncount - pcount).abs > max_diff.abs
             max_diff = ncount - pcount
-            index = i
+            index = pool.size - i - 1
           end
         end
 
