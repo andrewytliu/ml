@@ -50,17 +50,19 @@ module ML
         train = {}
 
         for xn, yn in data
-          dot = (v_t * xn) * yn
+          x_n = Matrix.column_vector(xn)
+          dot = (v_t * x_n)[0,0] * yn
+          thr = (w_t * x_n)[0,0] * (-yn) / dot
+          
           next if dot == 0
-
           if dot > 0
-            train[-yn * (w_t * xn) / dot] = 1
+            train[[thr]] = 1
           else
-            train[-yn * (w_t * xn) / dot] = -1
+            train[[thr]] = -1
           end
         end
 
-        learner = DecisionStumpLearner(1)
+        learner = DecisionStumpLearner.new(1)
         learner.train! train
         learner.hypothesis[2]
       end
@@ -68,7 +70,18 @@ module ML
       def calc_v iteration
         v = Array.new(@dim + 1, 0)
         v[iteration % @dim] = 1
-        v
+        Matrix.column_vector(v)
+      end
+
+      def classify_error supervised_data
+        error = 0
+
+        for data, result in supervised_data
+          classified_result = (classify(Matrix.column_vector(data)) <=> 0)
+          error += 1 unless result == classified_result
+        end
+
+        error
       end
     end
   end
