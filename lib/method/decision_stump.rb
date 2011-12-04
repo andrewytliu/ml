@@ -82,10 +82,31 @@ module ML
           end
         end
 
-        thres = if index == pool.size - 1
-                  pool[-1][0][dim] + 0.01
+        pool.reverse.each_with_index do |dat, i|
+          if dat[1] == 1
+            pcount += 1
+          else
+            ncount += 1
+          end
+
+          if (ncount - pcount).abs > max_diff.abs
+            max_diff = ncount - pcount
+            index = i
+          end
+        end
+
+        thres = if max_diff > 0
+                  if index == pool.size - 1
+                    pool[-1][0][dim] + 0.01
+                  else
+                    (pool[index][0][dim] + pool[index+1][0][dim]) / 2.0
+                  end
                 else
-                  (pool[index][0][dim] + pool[index+1][0][dim]) / 2.0
+                  if index == 0
+                    pool[0][0][dim] - 0.01
+                  else
+                    (pool[index][0][dim] + pool[index-1][0][dim]) / 2.0
+                  end
                 end
         hypo = if max_diff > 0
                  [-1, dim, thres]
