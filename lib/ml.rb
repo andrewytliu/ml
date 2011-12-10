@@ -7,6 +7,8 @@ require 'data/plotter'
 require 'data/generator'
 require 'data/parser'
 
+require 'method/toolbox'
+
 require 'method/perceptron'
 require 'method/adaptive_perceptron'
 require 'method/pocket'

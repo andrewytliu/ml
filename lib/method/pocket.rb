@@ -15,7 +15,7 @@ module ML
           error = classify_error pool
           if error < best_error
             error = best_error
-            pocket = @w.dup
+            pocket = current_vector.dup
           end
           break if best_error == 0
 

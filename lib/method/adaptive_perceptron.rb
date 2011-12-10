@@ -15,11 +15,11 @@ module ML
 
     protected
       def wrongly_classify x, y
-        classify(x) * y <= 1
+        classify_inner(x) * y <= 1
       end
 
       def update_vector x, y
-        @w = @w + @eta * (y - classify(x))* x
+        self.current_vector += @eta * (y - classify_inner(x))* x
       end
     end
   end

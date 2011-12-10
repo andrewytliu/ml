@@ -8,15 +8,11 @@ describe "Learner" do
       generator = ML::Data::Generator2D.new
       data = generator.points_2d(10)
 
-      response = learner.train! data
-      error = response[:error]
-      update_count = response[:update_count]
+      learner.train! data
 
       line = learner.line
       line.should.kind_of?(Array).should == true
       line.size.should == 3
-
-      update_count.should > 0
     end
 
     it "should run perceptron learning in hyperspace" do
@@ -25,15 +21,11 @@ describe "Learner" do
       generator = ML::Data::Generator.new(4)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
-      response = learner.train! data
-      error = response[:error]
-      update_count = response[:update_count]
+      learner.train! data
 
       line = learner.line
       line.should.kind_of?(Array).should == true
       line.size.should == 5
-
-      update_count.should > 0
     end
   end
 
@@ -44,16 +36,11 @@ describe "Learner" do
       generator = ML::Data::Generator.new(4, 100)
       data = generator.points(10, ML::Data::Generator.generate_vector(4))
 
-      response = learner.train! data, 1000
-      error = response[:error]
-      update_count = response[:update_count]
+      learner.train! data, 1000
 
       line = learner.line
       line.should.kind_of?(Array).should == true
       line.size.should == 5
-
-      update_count.should > 0
-      update_count.should < 1000
     end
   end
 

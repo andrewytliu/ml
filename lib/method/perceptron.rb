@@ -4,12 +4,15 @@ module ML
   module Learner
     # Implementation of Perceptron Learning Algorithm
     class PerceptronLearner
+      include Toolbox
+      include LinearToolbox
+
       # Initialize a perceptron learner
       #
       # @param [Integer] dim the number of dimension
       def initialize dim
         @dim = dim
-        @w = Matrix.column_vector(Array.new(dim + 1, 0))
+        self.current_vector = Matrix.column_vector(Array.new(dim + 1, 0))
       end
 
       # Train with supervised data
@@ -41,22 +44,6 @@ module ML
 
           break unless misclassified
         end
-
-        # check out errors
-        error = if update >= threshold
-                  classify_error pool
-                else
-                  0
-                end
-
-        {:error => error, :update_count => update}
-      end
-
-      # The final coefficient of the line
-      #
-      # @return [Array] [a,b,c] for ax+by+c=0
-      def line
-        @w.column(0).to_a
       end
 
       # Predict certain data
@@ -64,31 +51,16 @@ module ML
       # @param [Array] data data in question
       # @return [Integer] prediction
       def predict data
-        classify(Matrix.column_vector(data + [1.0])) <=> 0
+        classify_bool Matrix.column_vector(data)
       end
 
     protected
-      def classify data
-        (@w.transpose * data)[0,0]
-      end
-
       def wrongly_classify x, y
-        classify(x) * y <= 0
+        classify_inner(x) * y <= 0
       end
 
       def update_vector x, y
-        @w = @w + y * x
-      end
-
-      def classify_error supervised_data
-        error = 0
-
-        for data, result in supervised_data
-          classified_result = (classify(Matrix.column_vector(data)) <=> 0)
-          error += 1 unless result == classified_result
-        end
-
-        error
+        self.current_vector += y * x
       end
     end
   end
