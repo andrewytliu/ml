@@ -8,6 +8,9 @@ Machine learning library for ruby
 * Adaptive Perceptron (Adaline) Learning Algorithm
 * Pocket Learning Algorithm
 * Decision Stump Learning Algorithm
+* Linear Regression Algorithm
+* Logistic Regression Algorithm
+* Cyclic Coordinate Descent 
 
 # Tools
 
