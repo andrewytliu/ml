@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ml"
-  s.version = "0.3.0"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Liu"]
-  s.date = "2011-11-17"
+  s.date = "2011-12-13"
   s.description = "Machine learning library in Ruby"
   s.email = "andrewliu33@gmail.com"
   s.extra_rdoc_files = [
@@ -27,10 +27,15 @@ Gem::Specification.new do |s|
     "lib/data/parser.rb",
     "lib/data/plotter.rb",
     "lib/method/adaptive_perceptron.rb",
+    "lib/method/cyclic_descent.rb",
     "lib/method/decision_stump.rb",
+    "lib/method/linear_regression.rb",
+    "lib/method/logistic_regression.rb",
     "lib/method/perceptron.rb",
     "lib/method/pocket.rb",
+    "lib/method/toolbox.rb",
     "lib/ml.rb",
+    "lib/util/util.rb",
     "ml.gemspec",
     "spec/data_spec.rb",
     "spec/learner_spec.rb",
