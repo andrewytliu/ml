@@ -8,7 +8,7 @@ module ML
       #
       # @param [Integer] dim the number of dimension
       # @param [Float] the eta parameter
-      def initialize dim, eta
+      def initialize dim, eta = 0.1
         super(dim)
         @eta = eta
       end

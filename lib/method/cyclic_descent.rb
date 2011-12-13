@@ -4,12 +4,14 @@ module ML
   module Learner
     # Implementation of cyclic coordinate descent learner
     class CyclicDescentLearner
+      include Toolbox
+      include LinearToolbox
+
       # Initialize a learner
       #
       # @param [Integer] dim dimension
       def initialize dim, model = :basis
         @dim = dim
-        @w = Matrix.column_vector(Array.new(dim + 1, 0))
         @model = model
       end
 
@@ -17,37 +19,20 @@ module ML
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
       # @param [Integer] iteration the desired iteration number
-      def train! data, iteration
+      def train! data, iteration = 1000
+        self.current_vector = Matrix.column_vector(Array.new(@dim + 1, 0))
         iteration.times do |i|
           v = calc_v i
           eta = calc_eta data, v
-          @w += eta * v
+          self.current_vector += eta * v
         end
       end
 
-      # The final coefficient of the line
-      #
-      # @return [Array] [a,b,c] for ax+by+c=0
-      def line
-        @w.column(0).to_a
-      end
-
-      # Predict certain data
-      #
-      # @param [Array] data data in question
-      # @return [Integer] prediction
-      def predict data
-        classify(Matrix.column_vector(data + [1.0])) <=> 0
-      end
-
     private
-      def classify data
-        (@w.transpose * data)[0,0]
-      end
 
       def calc_eta data, v
         v_t = v.transpose
-        w_t = @w.transpose
+        w_t = self.current_vector.transpose
         train = {}
 
         for xn, yn in data
@@ -76,17 +61,6 @@ module ML
           v[iteration % @dim] = Util.normal_distribution 0,1
         end
         Matrix.column_vector(v)
-      end
-
-      def classify_error supervised_data
-        error = 0
-
-        for data, result in supervised_data
-          classified_result = (classify(Matrix.column_vector(data)) <=> 0)
-          error += 1 unless result == classified_result
-        end
-
-        error
       end
     end
   end

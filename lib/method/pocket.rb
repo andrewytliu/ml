@@ -6,7 +6,7 @@ module ML
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
       # @param [Integer] iteration the number of the iterations
-      def train! data, iteration
+      def train! data, iteration = 1000
         pool = data.to_a
         best_error, pocket = 1.0/0, nil
 

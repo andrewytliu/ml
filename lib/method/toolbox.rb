@@ -13,7 +13,6 @@ module ML
         raise "Cannot predict"
       end
 
-    protected
       # Calculating model error 
       #
       # @param [Hash] data
@@ -37,6 +36,14 @@ module ML
     module LinearToolbox
       # Current prediction vector
       attr_accessor :current_vector
+
+      # Predict certain data
+      #
+      # @param [Array] data data in question
+      # @return [Integer] prediction
+      def predict data
+        classify_bool Matrix.column_vector(data)
+      end
 
       # The final coefficient of the line
       #

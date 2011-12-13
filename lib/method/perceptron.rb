@@ -46,14 +46,6 @@ module ML
         end
       end
 
-      # Predict certain data
-      #
-      # @param [Array] data data in question
-      # @return [Integer] prediction
-      def predict data
-        classify_bool Matrix.column_vector(data)
-      end
-
     protected
       def wrongly_classify x, y
         classify_inner(x) * y <= 0

@@ -2,6 +2,7 @@ module ML
   module Learner
     # Implementation of decision stump learning
     class DecisionStumpLearner
+      include Toolbox
       # Initialize a decision stump learner
       #
       # @param [Integer] dim dimension
@@ -14,15 +15,12 @@ module ML
       # Train with a supervised data
       #
       # @param [Hash] data supervised input data (mapping from array to integer)
-      # @return [Hash] {error} error of the training data
       def train! data
         for i in 0...@dim
           hypo, error = search data, i
           update_hypo hypo, error
           @error_vector[i] = error
         end
-
-        {:error => @min_error}
       end
 
       # Predict certain data
@@ -67,8 +65,9 @@ module ML
       def search data, dim
         pool = data.to_a.sort_by {|line| line[0][dim]}
         max_diff, index = 0, nil
-        pcount, ncount = 0, 0
 
+        # in order search
+        pcount, ncount = 0, 0
         pool.each_with_index do |dat, i|
           if dat[1] == 1
             pcount += 1
@@ -82,6 +81,7 @@ module ML
           end
         end
 
+        # reverse search
         pcount, ncount = 0, 0
         pool.reverse.each_with_index do |dat, i|
           if dat[1] == 1
@@ -115,10 +115,10 @@ module ML
                  [1, dim, thres]
                end
 
-        [hypo, classify_error(pool, hypo)]
+        [hypo, hypo_error(pool, hypo)]
       end
 
-      def classify_error data, hypo
+      def hypo_error data, hypo
         error = 0
         for dat, result in data
           error += 1 unless classify(dat, hypo) == result
